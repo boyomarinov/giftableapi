@@ -15,8 +15,8 @@ namespace Giftable.Data
         {
         }
 
-        public IDbSet<User> Users { get; set; }
-        public IDbSet<Circle> Circles { get; set; }
-        public IDbSet<Gift> Gifts { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Circle> Circles { get; set; }
+        public DbSet<Gift> Gifts { get; set; }
     }
 }
