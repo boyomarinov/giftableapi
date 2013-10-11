@@ -23,6 +23,12 @@ namespace Giftable.Models
 
         public virtual ICollection<Gift> Wishlist { get; set; } 
 
-        public virtual ICollection<Gift> SuggestedGifts { get; set; } 
+        public virtual ICollection<Gift> SuggestedGifts { get; set; }
+
+        public User()
+        {
+            this.Wishlist = new HashSet<Gift>();
+            this.SuggestedGifts = new HashSet<Gift>();
+        }
     }
 }
