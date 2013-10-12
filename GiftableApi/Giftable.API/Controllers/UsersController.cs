@@ -141,6 +141,7 @@ namespace Giftable.API.Controllers
                                         });
 
                 var response = this.Request.CreateResponse(HttpStatusCode.OK, responseModel);
+
                 return response;
             });
         }
