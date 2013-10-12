@@ -13,8 +13,12 @@ namespace Giftable.API
         {
             config.Routes.MapHttpRoute(
                name: "GiftApi",
-               routeTemplate: "api/gifts/{action}",
-               defaults: new { controller = "gifts" });
+               routeTemplate: "api/gifts/{action}/{id}",
+               defaults: new
+               {
+                   controller = "gifts",
+                   id = RouteParameter.Optional
+               });
 
             config.Routes.MapHttpRoute(
                 name: "UserLoginApi",

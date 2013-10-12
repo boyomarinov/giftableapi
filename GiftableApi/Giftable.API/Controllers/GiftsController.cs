@@ -28,6 +28,7 @@ namespace Giftable.API.Controllers
                 var giftEntity = new Gift
                 {
                     Name = model.Name,
+                    Description = model.Description
                 };
 
                 if (model.Image != null)
@@ -80,6 +81,7 @@ namespace Giftable.API.Controllers
                 var giftEntity = new Gift
                 {
                     Name = model.Name,
+                    Description = model.Description,
                     SuggestedBy = currentUser,
                     SuggestedFor = giftFor
                 };
@@ -130,6 +132,7 @@ namespace Giftable.API.Controllers
                                    {
                                        Id = x.Id,
                                        Name = x.Name,
+                                       Description = x.Description,
                                        Latitude = x.Latitude,
                                        Longitude = x.Longitude,
                                        Image = x.Image,
@@ -159,6 +162,7 @@ namespace Giftable.API.Controllers
                         {
                             Id = x.Id,
                             Name = x.Name,
+                            Description = x.Description,
                             Latitude = x.Latitude,
                             Longitude = x.Longitude,
                             Image = x.Image,
@@ -190,6 +194,7 @@ namespace Giftable.API.Controllers
                         {
                             Id = x.Id,
                             Name = x.Name,
+                            Description = x.Description,
                             Latitude = x.Latitude,
                             Longitude = x.Longitude,
                             Image = x.Image,
@@ -208,6 +213,39 @@ namespace Giftable.API.Controllers
                 }
 
                 return unseen;
+            });
+        }
+
+        [HttpGet]
+        [ActionName("details")]
+        public HttpResponseMessage GiftDetails(int id,
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]
+            string accessToken)
+        {
+            return this.ExecuteOperationAndHandleExceptions(() =>
+            {
+                var context = new ApplicationDbContext();
+
+                var responseModel = context.Gifts.Where(x => x.Id == id)
+                                    .Select(x => new GiftModel
+                                    {
+                                        Id = x.Id,
+                                        Name = x.Name,
+                                        Description = x.Description,
+                                        Latitude = x.Latitude,
+                                        Longitude = x.Longitude,
+                                        Image = x.Image,
+                                        Url = x.Url,
+                                        Bought = x.Bought,
+                                        Checked = x.Checked,
+                                        Seen = x.Seen,
+                                        SuggestedBy = x.SuggestedBy.Username,
+                                        SuggestedFor = x.SuggestedFor.Username
+                                    }).FirstOrDefault();
+
+                var response = this.Request.CreateResponse(HttpStatusCode.Created, responseModel);
+
+                return response;
             });
         }
     }
