@@ -120,6 +120,31 @@ namespace Giftable.API.Controllers
             });
         }
 
+        [HttpGet]
+        [ActionName("friends")]
+        public HttpResponseMessage GetFriends(
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]
+            string accessToken)
+        {
+            return this.ExecuteOperationAndHandleExceptions(() =>
+            {
+                var context = new ApplicationDbContext();
+                var user = this.GetUserByAccessToken(accessToken, context);
+
+                var responseModel = user.Friends.AsQueryable()
+                                        .Select(x => new FriendModel
+                                        {
+                                            Id = x.Id,
+                                            Email = x.Email,
+                                            AuthCode = x.AuthenticationCode,
+                                            Username = x.Username
+                                        });
+
+                var response = this.Request.CreateResponse(HttpStatusCode.OK, responseModel);
+                return response;
+            });
+        }
+
         private User GetUserByUsernameOrEmail(UserModel model, ApplicationDbContext context)
         {
             var usernameToLower = model.Username.ToLower();

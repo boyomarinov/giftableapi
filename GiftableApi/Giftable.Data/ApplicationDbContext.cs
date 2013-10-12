@@ -18,5 +18,17 @@ namespace Giftable.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Circle> Circles { get; set; }
         public DbSet<Gift> Gifts { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+               .HasMany(u => u.Friends)
+               .WithMany().Map(w =>
+               {
+                   w.ToTable("User_Friends")
+                       .MapLeftKey("UserId")
+                       .MapRightKey("FriendId");
+               });
+        }
     }
 }

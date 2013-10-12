@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Giftable.API
 {
@@ -29,6 +31,19 @@ namespace Giftable.API
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+
+            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling =
+                PreserveReferencesHandling.None;
+
+            config.Formatters.JsonFormatter.Indent = true;
+
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
+
+            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.SingleOrDefault(
+                    t => t.MediaType == "application/xml");
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
 
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
             // To avoid processing unexpected or malicious queries, use the validation settings on QueryableAttribute to validate incoming queries.

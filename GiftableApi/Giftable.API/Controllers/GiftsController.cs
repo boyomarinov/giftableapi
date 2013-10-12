@@ -126,19 +126,19 @@ namespace Giftable.API.Controllers
                 var context = new ApplicationDbContext();
                 var user = this.GetUserByAccessToken(accessToken, context);
                 var wishlist = user.Wishlist.AsQueryable().OrderBy(x => x.Name)
-                        .Select(x => new GiftModel
-                        {
-                            Id = x.Id,
-                            Name = x.Name,
-                            Latitude = x.Latitude,
-                            Longitude = x.Longitude,
-                            Image = x.Image,
-                            Url = x.Url,
-                            SuggestedBy = x.SuggestedBy.Username,
-                            SuggestedFor = x.SuggestedFor.Username,
-                            Bought = x.Bought,
-                            Checked = x.Checked
-                        });
+                                   .Select(x => new GiftModel
+                                   {
+                                       Id = x.Id,
+                                       Name = x.Name,
+                                       Latitude = x.Latitude,
+                                       Longitude = x.Longitude,
+                                       Image = x.Image,
+                                       Url = x.Url,
+                                       //SuggestedBy = x.SuggestedBy.Username,
+                                       //SuggestedFor = x.SuggestedFor.Username,
+                                       Bought = x.Bought,
+                                       Checked = x.Checked
+                                   });
 
                 return wishlist;
             });
@@ -163,8 +163,8 @@ namespace Giftable.API.Controllers
                             Longitude = x.Longitude,
                             Image = x.Image,
                             Url = x.Url,
-                            SuggestedBy = x.SuggestedBy.Username,
-                            SuggestedFor = x.SuggestedFor.Username,
+                            //SuggestedBy = x.SuggestedBy.Username,
+                            //SuggestedFor = x.SuggestedFor.Username,
                             Bought = x.Bought,
                             Checked = x.Checked,
                             Seen = x.Seen
