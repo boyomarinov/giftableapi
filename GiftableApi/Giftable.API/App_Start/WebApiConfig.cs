@@ -10,6 +10,11 @@ namespace Giftable.API
         public static void Register(HttpConfiguration config)
         {
             config.Routes.MapHttpRoute(
+               name: "GiftApi",
+               routeTemplate: "api/gifts/{action}",
+               defaults: new { controller = "gifts" });
+
+            config.Routes.MapHttpRoute(
                 name: "UserLoginApi",
                 routeTemplate: "api/auth/token",
                 defaults: new { controller = "users", action = "token" });
