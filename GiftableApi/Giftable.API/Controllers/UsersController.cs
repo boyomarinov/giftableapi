@@ -164,6 +164,7 @@ namespace Giftable.API.Controllers
                 var ch = TokenChars[index];
                 tokenBuilder.Append(ch);
             }
+
             return tokenBuilder.ToString();
         }
 
