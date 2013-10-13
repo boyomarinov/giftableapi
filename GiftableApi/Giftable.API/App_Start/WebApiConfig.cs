@@ -27,8 +27,12 @@ namespace Giftable.API
 
             config.Routes.MapHttpRoute(
                 name: "UserApi",
-                routeTemplate: "api/users/{action}",
-                defaults: new { controller = "users" });
+                routeTemplate: "api/users/{action}/{id}",
+                defaults: new
+                {
+                    controller = "users",
+                    id = RouteParameter.Optional
+                });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
