@@ -28,7 +28,10 @@ namespace Giftable.API.Controllers
                 var giftEntity = new Gift
                 {
                     Name = model.Name,
-                    Description = model.Description
+                    Description = model.Description,
+                    Bought = false,
+                    Checked = false,
+                    Seen = true
                 };
 
                 if (model.Image != null)
@@ -83,7 +86,10 @@ namespace Giftable.API.Controllers
                     Name = model.Name,
                     Description = model.Description,
                     SuggestedBy = currentUser,
-                    SuggestedFor = giftFor
+                    SuggestedFor = giftFor,
+                    Bought = false,
+                    Checked = false,
+                    Seen = false
                 };
 
                 if (model.Image != null)
@@ -213,6 +219,38 @@ namespace Giftable.API.Controllers
                 }
 
                 return unseen;
+            });
+        }
+
+        [HttpGet]
+        [ActionName("located-gifts")]
+        public IQueryable<GiftModel> GetGiftsWithLocation(
+            [ValueProvider(typeof(HeaderValueProviderFactory<string>))]
+            string accessToken)
+        {
+            return this.ExecuteOperationAndHandleExceptions(() =>
+            {
+                var context = new ApplicationDbContext();
+                var user = this.GetUserByAccessToken(accessToken, context);
+                var gifts = context.Gifts.AsQueryable().OrderBy(x => x.Name)
+                        .Where(x => x.Latitude != null && x.Longitude != null)
+                        .Select(x => new GiftModel
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            Description = x.Description,
+                            Latitude = x.Latitude,
+                            Longitude = x.Longitude,
+                            Image = x.Image,
+                            Url = x.Url,
+                            SuggestedBy = x.SuggestedBy.Username,
+                            SuggestedFor = x.SuggestedFor.Username,
+                            Bought = x.Bought,
+                            Checked = x.Checked,
+                            Seen = x.Seen
+                        });
+
+                return gifts;
             });
         }
 
