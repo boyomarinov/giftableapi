@@ -165,7 +165,7 @@ namespace Giftable.API.Controllers
                                             Email = x.Email,
                                             AuthCode = x.AuthenticationCode,
                                             Username = x.Username
-                                        });
+                                        }).FirstOrDefault();
 
                 var response = this.Request.CreateResponse(HttpStatusCode.OK, responseModel);
 
